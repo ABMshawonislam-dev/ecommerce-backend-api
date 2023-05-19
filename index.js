@@ -12,10 +12,6 @@ dbConnection()
 app.use(routes);
 
 
-app.get('/', function (req, res) {
-  res.send('Hello World')
-})
-
 // mongodb+srv://oreby:wOFhvtceMrbnrSxn@cluster0.1gr85au.mongodb.net/oreby?retryWrites=true&w=majority
 
 app.listen(8000)
