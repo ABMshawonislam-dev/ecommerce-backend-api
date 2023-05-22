@@ -43,7 +43,21 @@ let registrationControllers = async (req, res) => {
         { new: true }
       );
 
-      sendEmail(email, randomNumber, otpTemplate);
+      // sendEmail(email, randomNumber, otpTemplate);
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "citesmern2104@gmail.com",
+          pass: "dvduwhzhnfpquwxz",
+        },
+      });
+
+      let info = await transporter.sendMail({
+        from: "citesmern2104@gmail.com", // sender address
+        to: email, // list of receivers
+        subject: "Please Varify Your Email", // Subject line
+        html: otpTemplate(rendomOtpStore), // html body
+      });
 
       // setTimeout(async function () {
       //   console.log("OTP Deleted");
