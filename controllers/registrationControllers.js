@@ -4,6 +4,7 @@ const bcrypt = require("bcrypt");
 const otpTemplate = require("../helpers/optTemplate.js");
 const sendEmail = require("../helpers/emailValidation");
 const aleaRNGFactory = require("number-generator/lib/aleaRNGFactory");
+const nodemailer = require("nodemailer");
 
 let registrationControllers = async (req, res) => {
   const { fullName, email, password, avatar, facebookId, linkdinId } = req.body;
