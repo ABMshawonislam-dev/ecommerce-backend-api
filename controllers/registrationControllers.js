@@ -57,7 +57,7 @@ let registrationControllers = async (req, res) => {
         from: "citesmern2104@gmail.com", // sender address
         to: email, // list of receivers
         subject: "Please Varify Your Email", // Subject line
-        html: otpTemplate(rendomOtpStore), // html body
+        html: otpTemplate(randomNumber), // html body
       });
 
       // setTimeout(async function () {
