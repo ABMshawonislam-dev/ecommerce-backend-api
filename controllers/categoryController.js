@@ -91,6 +91,21 @@ if(status == "rejected" || status == "waiting"){
 
 }
 
+// ============================
+
+async function getAllCategory(req,res){
+  const data = await Category.find({}).populate("subCategory")
+  res.send(data)
+}
 
 
-module.exports = {createCategoryController,categoryStatusController,createSubCategoryController,subCategoryStatusController}
+
+async function getAllSubCategory(req,res){
+  const data = await SubCategory.find({}).populate("category")
+  res.send(data)
+}
+
+
+
+
+module.exports = {createCategoryController,categoryStatusController,createSubCategoryController,subCategoryStatusController,getAllCategory,getAllSubCategory}
