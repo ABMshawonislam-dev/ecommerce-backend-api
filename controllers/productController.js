@@ -1,6 +1,9 @@
 const User = require("../models/usersModel")
 const Product = require("../models/productSchema")
-const Variant = require("../models/varinatSchema")
+const Variant = require("../models/variantSchema")
+
+
+
 
 async function secureUpload(req,res,next){
 
@@ -58,12 +61,19 @@ async function createProduct(req,res){
 }
 
 async function createVariant(req,res){
-    let {name,image,product} = req.body
+    let {color,image,storage,ram,size,price,quantity,product} = req.body
 
+
+console.log("ami",req.file.filename)
 
     let variant = new Variant({
-        name,
-        image,
+        color,
+        image: `${process.env.IMAGE_PATH}/uploads/${req.file.filename}`,
+        storage,
+        ram,
+        size,
+        price,
+        quantity,
         product
     })
 
