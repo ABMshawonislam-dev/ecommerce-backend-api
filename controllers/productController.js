@@ -63,9 +63,6 @@ async function createProduct(req,res){
 async function createVariant(req,res){
     let {color,image,storage,ram,size,price,quantity,product} = req.body
 
-
-console.log("ami",req.file.filename)
-
     let variant = new Variant({
         color,
         image: `${process.env.IMAGE_PATH}/uploads/${req.file.filename}`,
