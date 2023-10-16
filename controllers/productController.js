@@ -1,87 +1,74 @@
-const User = require("../models/usersModel")
-const Product = require("../models/productSchema")
-const Variant = require("../models/variantSchema")
+const User = require("../models/usersModel");
+const Product = require("../models/productSchema");
+const Variant = require("../models/variantSchema");
 
+async function secureUpload(req, res, next) {
+  let userid = req.headers.authorization.split("@")[1];
+  let password = req.headers.authorization.split("@")[2];
 
+  if (!req.headers.authorization) {
+    return res.send({ error: "Unauthorized" });
+  }
 
+  let user = await User.find({ _id: userid });
 
-async function secureUpload(req,res,next){
-
-    let userid= req.headers.authorization.split('@')[1]
-    let password= req.headers.authorization.split('@')[2]
-
-    if(!req.headers.authorization){
-        return res.send({error: "Unauthorized"})
+  if (user.length > 0) {
+    if (password == process.env.MERCHANT_SECRET_KEY) {
+      if (user[0].role == "merchant") {
+        next();
+      }
+    } else {
+      return res.send({ error: "You are not able to create product" });
     }
-
-    let user = await User.find({_id:userid})
-
-
-
-    if(user.length > 0){
-       
-
-        if(password == process.env.MERCHANT_SECRET_KEY){
-                if(user[0].role == "merchant"){
-                 next()
-                }
-        }else{
-            return res.send({error: "You are not able to create product"})
-        }
-       
-   
-    }else{
-        return res.send({error: "You are not able to create product"})
-    }
-
-
-
-
-
-    
+  } else {
+    return res.send({ error: "You are not able to create product" });
+  }
 }
 
-async function createProduct(req,res){
-    let {name,description,image,store} = req.body
+async function createProduct(req, res) {
+  let { name, description, image, store } = req.body;
 
+  let product = new Product({
+    name,
+    description,
+    image,
+    store,
+  });
 
-    let product = new Product({
-        name,
-        description,
-        image,
-        store
-    })
+  product.save();
 
-    product.save()
-
-    res.send({success:"Product Created Successfully"})
-
-
-
+  res.send({ success: "Product Created Successfully" });
 }
 
-async function createVariant(req,res){
-    let {color,image,storage,ram,size,price,quantity,product} = req.body
+async function createVariant(req, res) {
+  let { color, image, storage, ram, size, price, quantity, product } = req.body;
 
-    let variant = new Variant({
-        color,
-        image: `${process.env.IMAGE_PATH}/uploads/${req.file.filename}`,
-        storage,
-        ram,
-        size,
-        price,
-        quantity,
-        product
-    })
+  let variant = new Variant({
+    color,
+    image: `${process.env.IMAGE_PATH}/uploads/${req.file.filename}`,
+    storage,
+    ram,
+    size,
+    price,
+    quantity,
+    product,
+  });
 
-    variant.save()
+  variant.save();
 
-    await Product.findOneAndUpdate({_id: variant.product},{$push:{variants: variant._id}},{new:true})
+  await Product.findOneAndUpdate(
+    { _id: variant.product },
+    { $push: { variants: variant._id } },
+    { new: true }
+  );
 
-    res.send({success:"Variant Created Successfully"})
-
-
-
+  res.send({ success: "Variant Created Successfully" });
 }
 
-module.exports = {secureUpload,createProduct,createVariant}
+async function allproducts(req, res) {
+  let data = await Product.find({}).populate("store").populate("variants");
+
+  res.send(data);
+}
+
+module.exports = { secureUpload, createProduct, createVariant, allproducts };
