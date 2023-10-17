@@ -71,6 +71,12 @@ async function allproducts(req, res) {
   res.send(data);
 }
 
+async function allvariant(req, res) {
+  let data = await Variant.find({}).populate("product");
+
+  res.send(data);
+}
+
 async function deleteproduct(req, res) {
   let data = await Product.findByIdAndDelete(req.body.id);
   res.send("Delete Successful");
@@ -82,4 +88,5 @@ module.exports = {
   createVariant,
   allproducts,
   deleteproduct,
+  allvariant,
 };

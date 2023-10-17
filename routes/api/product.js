@@ -6,6 +6,7 @@ const {
   createVariant,
   allproducts,
   deleteproduct,
+  allvariant,
 } = require("../../controllers/productController");
 
 const multer = require("multer");
@@ -31,6 +32,8 @@ const upload = multer({ storage: storage });
 
 _.post("/createproduct", secureUpload, createProduct);
 _.post("/createvariant", upload.single("image"), createVariant);
+_.get("/allvariant", allvariant);
+
 _.get("/allproducts", allproducts);
 _.post("/deletproduct", deleteproduct);
 
