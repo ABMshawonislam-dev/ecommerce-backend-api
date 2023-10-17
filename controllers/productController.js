@@ -66,9 +66,20 @@ async function createVariant(req, res) {
 }
 
 async function allproducts(req, res) {
-  let data = await Product.find({}).populate("store").populate("variants");
+  let data = await Product.find({}).populate("store");
 
   res.send(data);
 }
 
-module.exports = { secureUpload, createProduct, createVariant, allproducts };
+async function deleteproduct(req, res) {
+  let data = await Product.findByIdAndDelete(req.body.id);
+  res.send("Delete Successful");
+}
+
+module.exports = {
+  secureUpload,
+  createProduct,
+  createVariant,
+  allproducts,
+  deleteproduct,
+};
