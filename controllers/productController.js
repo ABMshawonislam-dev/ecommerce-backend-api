@@ -28,7 +28,7 @@ async function secureUpload(req, res, next) {
 async function createProduct(req, res) {
   let { name, description, image, store } = req.body;
 
-  let product = new Product({
+  let product =  new Product({
     name,
     description,
     image,

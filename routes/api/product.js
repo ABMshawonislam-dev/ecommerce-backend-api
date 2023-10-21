@@ -30,7 +30,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-_.post("/createproduct", secureUpload, createProduct);
+// _.post("/createproduct", secureUpload, createProduct);
+_.post("/createproduct", createProduct);
 _.post("/createvariant", upload.single("image"), createVariant);
 _.get("/allvariant", allvariant);
 
