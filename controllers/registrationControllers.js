@@ -25,6 +25,8 @@ let registrationControllers = async (req, res) => {
     }
 
     bcrypt.hash(password, 10, async function (err, hash) {
+      const generator2 = aleaRNGFactory(Date.now());
+      let randomNumber = generator2.uInt32().toString().substring(0, 4);
       const user = new User({
         fullName,
         email,
@@ -32,17 +34,17 @@ let registrationControllers = async (req, res) => {
         avatar,
         facebookId,
         linkdinId,
+        randomOtp:randomNumber
       });
 
       user.save();
-      const generator2 = aleaRNGFactory(Date.now());
-      let randomNumber = generator2.uInt32().toString().substring(0, 4);
+     
 
-      let rendomOtpStore = await User.findOneAndUpdate(
-        { email },
-        { $set: { randomOtp: randomNumber } },
-        { new: true }
-      );
+      // await User.findOneAndUpdate(
+      //   { email },
+      //   { $set: { randomOtp: randomNumber } },
+      //   { new: true }
+      // );
 
       // sendEmail(email, randomNumber, otpTemplate);
       let transporter = nodemailer.createTransport({
@@ -73,6 +75,7 @@ let registrationControllers = async (req, res) => {
         success: "Registration Successfull,Please Check your Email",
         fullName: user.fullName,
         email: user.email,
+        role: user.role
       });
     });
   }

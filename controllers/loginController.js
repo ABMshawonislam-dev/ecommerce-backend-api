@@ -22,8 +22,9 @@ let loginController = async (req, res) => {
           if (result) {
             res.send({
               success: "Login Successfull.",
-              fullName: isEmailExist.fullName,
-              email: isEmailExist.email,
+              fullName: isEmailExist[0].fullName,
+              email: isEmailExist[0].email,
+              role: isEmailExist[0].role
             });
           } else {
             res.json({ error: "Password Not Match" });
