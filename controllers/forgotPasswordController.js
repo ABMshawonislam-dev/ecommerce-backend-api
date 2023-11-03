@@ -25,7 +25,7 @@ let forgotPasswordController = async (req, res) => {
         from: "citesmern2104@gmail.com", // sender address
         to: email, // list of receivers
         subject: "Reset Password", // Subject line
-        html: forgotPasswordLink("http://localhost:5173/resetpassword"), // html body
+        html: forgotPasswordLink(`http://localhost:5173/resetpassword?email=${email}`), // html body
       });
 
       res.send({"success":"Please Check your email"})
